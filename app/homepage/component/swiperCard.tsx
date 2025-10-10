@@ -163,7 +163,7 @@ export default function SwiperCard (){
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <div className="flex justify-end mt-50 space-x-2 pr-12" >
+                <div className="flex mb-2 space-x-2 pr-12" >
                     <CarouselPrevious 
                         className="  bg-white border rounded p-5 text-2xl w-14 h-14 flex items-center justify-center hover:bg-transparent-100 " 
                     />
