@@ -1,4 +1,5 @@
 "use client"
+import Footer from "./component/footer";
 import GrayFooter from "./component/grayFooter";
 import SwiperCard from "./component/swiperCard";
 import SwiperVideoCard from "./component/swiperVidCard";
@@ -111,14 +112,14 @@ export default function HomePage() {
                 </div>
             </div>   
             <div className="w-full h-full text-center mt-5">
-                <h1 className="text-3xl font-extrabold mr-110 ml-110">
-                    Standing at the Forefront of Innovation
+                <h1 className="text-5xl font-sans mr-90 ml-90 mt-10 mb-10">
+                    Explore DJI Products in Different Fields
                 </h1>
                 <div className="grid h-[450px] grid-cols-3 justify-center gap-5" >
                     <div className="flex-1 relative p-6 flex flex-col items-center justify-center">
-                        <div className="absolute inset-0 flex flex-col items-center pt-8 z-10" >
-                            <h2 className="text-white text-2xl font-extrabold drop-shadow" >Video Production</h2>
-                            <p className=" text-white text-0.5s mb-8 font-extralight drop-shadow">Professional Aerial and Ground Filmmaking Tools</p>
+                        <div className="absolute inset-0 flex flex-col items-center pt-8 z-10 mt-10" >
+                            <h2 className="text-white text-3xl font-extrabold drop-shadow" >Video Production</h2>
+                            <p className=" text-white text-2m mb-8 font-extralight drop-shadow">Professional Aerial and Ground Filmmaking Tools</p>
                             <div className="text-center grid grid-cols-1">
                                 <p className=" mb-8 font-light drop-shadow cursor-pointer text-white hover:underline">Learn More {'>'}</p>
                             </div>
@@ -129,9 +130,9 @@ export default function HomePage() {
                         />
                     </div>
                     <div className="flex-1 relative p-6 flex flex-col items-center justify-center">
-                        <div className="absolute inset-0 flex flex-col items-center pt-8 z-10" >
-                            <h2 className="text-white text-2xl font-extrabold drop-shadow mr-3 ml-4" >Enterprise</h2>
-                            <p className=" text-white text-0.5s mb-8 font-extralight drop-shadow">Drone Solutions for a New Generation of Work</p>
+                        <div className="absolute inset-0 flex flex-col items-center pt-8 z-10 mt-10" >
+                            <h2 className="text-white text-3xl font-extrabold drop-shadow mr-3 ml-4" >Enterprise</h2>
+                            <p className=" text-white text-2m mb-8 font-extralight drop-shadow">Drone Solutions for a New Generation of Work</p>
                             <div className="text-center grid grid-cols-1">
                                 <p className=" mb-8 font-light drop-shadow cursor-pointer text-white hover:underline">Learn More {'>'}</p>
                             </div>
@@ -142,9 +143,9 @@ export default function HomePage() {
                         />
                     </div>
                     <div className="flex-1 relative p-6 flex flex-col items-center justify-center">
-                        <div className="absolute inset-0 flex flex-col items-center pt-8 z-10" >
-                            <h2 className="text-white text-2xl font-extrabold drop-shadow" >DJI Agriculture Annual Report</h2>
-                            <p className=" text-white text-0.5s mb-8 font-extralight drop-shadow">Efficient and Intelligent </p>
+                        <div className="absolute inset-0 flex flex-col items-center pt-8 z-10 mt-10" >
+                            <h2 className="text-white text-3xl font-extrabold drop-shadow" >DJI Agriculture Annual Report</h2>
+                            <p className=" text-white text-1xl mb-8 font-extralight drop-shadow">Efficient and Intelligent </p>
                             <div className="text-center grid grid-cols-1">
                                 <p className=" mb-8 font-light drop-shadow cursor-pointer text-white hover:underline">Learn More {'>'}</p>
                             </div>
@@ -158,7 +159,8 @@ export default function HomePage() {
             </div>
             <div className="mt-7">
             <GrayFooter/>        
-            </div>  
+            </div> 
+            <Footer/> 
         </div>
     )
 }

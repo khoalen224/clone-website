@@ -8,27 +8,30 @@ export default function GrayFooter(){
                         alt="where to buy"                        
                         className="h-[72px] w-auto"
                     />
-                    <h1 className="text-black text-lg sm:text-2xl font-extrabold">
+                    <h1 className="text-black text-lg sm:text-2xl font-light">
                         Where to buy
                     </h1>
+                    <p className=" mb-8 font-light drop-shadow cursor-pointer text-gray-700 hover:underline">Learn More {'>'}</p>
                 </div>
-                <div className="flex flex-col justify-center flex-wrap gap-4 p-6">
+                <div className="flex flex-col text-center justify-center flex-wrap gap-4 p-6">
                     <img
                         src="https://www-cdn.djiits.com/cms/uploads/60ff58dae8a3fffc6a6e292ce587ca46.svg"
                         className="h-[72px] auto"
                     />
-                    <h1 className="text-black text-lg sm:text-2xl font-extrabold">
-                        Where to buy
+                    <h1 className="text-black text-lg sm:text-2xl font-light">
+                        Support
                     </h1>
+                    <p className=" mb-8 font-light drop-shadow cursor-pointer text-gray-700 hover:underline">Learn More {'>'}</p>
                 </div>
-                <div className="flex flex-col justify-center flex-wrap gap-4 p-6">
+                <div className="flex flex-col text-center justify-center flex-wrap gap-4 p-6">
                     <img
                         src="https://www-cdn.djiits.com/cms/uploads/e5878a0a23f0c8b05878dac1e0293dfd.svg"
                         className="h-[72px] auto"
                     />
-                    <h1 className="text-black text-lg sm:text-2xl font-extrabold">
-                        Where to buy
+                    <h1 className="text-black text-lg sm:text-2xl font-light">
+                        Fly Safe 
                     </h1>
+                    <p className=" mb-8 font-light drop-shadow cursor-pointer text-gray-700 hover:underline">Learn More {'>'}</p>
                 </div>
             </div>
         </div>
