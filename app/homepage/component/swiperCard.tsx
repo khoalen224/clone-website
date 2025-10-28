@@ -13,41 +13,82 @@ export default function SwiperCard (){
     // Camera Drone Menu 
     const [showCameraDroneMenu, setShowCameraDroneMenu] = useState(false);
     const cameraDroneMenuRef = useRef(null);
-    const cameraDroneTimeout = useRef(null);
+    const cameraDroneTimeout = useRef<NodeJS.Timeout | null>(null);
     const handleCameraDropDownEnter = () =>{
         if(cameraDroneTimeout.current){
             clearTimeout(cameraDroneTimeout.current);
         }
         setShowCameraDroneMenu(true);
     }
+    const handleCameraDropDownLeave = () =>{
+        cameraDroneTimeout.current = setTimeout(() => {
+            setShowCameraDroneMenu(false);
+        }, 50);
+    };
+    
     // Hand held 
     const [showHandHeld, setShowHandHeld] = useState(false);
     const handHeldRef = useRef(null);
-    const handHeldTimeout = useRef(null);
+    const handHeldTimeout = useRef<NodeJS.Timeout | null>(null);
     const handleHandHeldEnter = () =>{
         if(handHeldTimeout.current){
             clearTimeout(handHeldTimeout.current);
         }
         setShowHandHeld(true);
     }
+    const handleHandHeldLeave = () =>{
+        handHeldTimeout.current = setTimeout(() => {
+            setShowHandHeld(false);
+        }, 50);
+    };
+
     //Power 
     const [showPower, setShowPower] = useState(false);
     const powerRef = useRef(null);
-    const powerTimeout = useRef(null);
+    const powerTimeout = useRef<NodeJS.Timeout | null>(null);
     const handlePowerEnter = () =>{
         if(powerTimeout.current){
             clearTimeout(powerTimeout.current);
         }
         setShowPower(true);
     }
+    const handlePowerLeave = () =>{
+        powerTimeout.current = setTimeout(() => {
+            setShowPower(false);
+        }, 50);
+    };
+
     //Specialized
     const [showSpecialized, setShowSpecialized] = useState(false);
     const specializedRef = useRef(null);
-    const specializedTimeout = useRef(null);
+    const specializedTimeout = useRef<NodeJS.Timeout | null>(null);
+    const handleSpecializedEnter = () =>{
+        if(specializedTimeout.current){
+            clearTimeout(specializedTimeout.current);
+        }
+        setShowSpecialized(true);
+    }
+    const handleSpecializedLeave = () =>{
+        specializedTimeout.current = setTimeout(() => {
+            setShowSpecialized(false);
+        }, 50);
+    };
+
     //Explore 
     const [showExplore, setShowExplore] = useState(false);
     const exploreRef = useRef(null);
-    const exploreTimeout = useRef(null);
+    const exploreTimeout = useRef<NodeJS.Timeout | null>(null);
+    const handleExploreEnter = () =>{
+        if(exploreTimeout.current){
+            clearTimeout(exploreTimeout.current);
+        }
+        setShowExplore(true);
+    }
+    const handleExploreLeave = () =>{
+        exploreTimeout.current = setTimeout(() => {
+            setShowExplore(false);
+        }, 50);
+    };
 
     const[isScrolled, setIsScrolled] = useState(false);
     const[isHovered , setIsHovered] = useState(false);
@@ -82,7 +123,7 @@ export default function SwiperCard (){
                     <div
                         className={`ml-5 mr-5 transition-colors  cursor-pointer ${isScrolled || isHovered ? 'text-black' : 'text-white'}`}
                         onMouseEnter={handleCameraDropDownEnter}
-                        onMouseLeave={handleCameraDropDownEnter}
+                        onMouseLeave={handleCameraDropDownLeave}
                     >
                         Camera Drones
                         {showCameraDroneMenu && (
@@ -93,7 +134,7 @@ export default function SwiperCard (){
                     <div 
                         className={` ml-5 mr-5 transition-colors ${isScrolled || isHovered ? 'text-black' : 'text-white'}`}
                         onMouseEnter={handleHandHeldEnter}
-                        onMouseLeave={handleHandHeldEnter}
+                        onMouseLeave={handleHandHeldLeave}
                     >
                         Handheld
                         {showHandHeld && (
@@ -101,14 +142,38 @@ export default function SwiperCard (){
                             </div>
                         )}
                     </div>
-                    <div className={` ml-5 mr-5 transition-colors ${isScrolled || isHovered ? 'text-black' : 'text-white'}`}>
+                    <div 
+                        className={` ml-5 mr-5 transition-colors ${isScrolled || isHovered ? 'text-black' : 'text-white'}`}
+                        onMouseEnter={handlePowerEnter}
+                        onMouseLeave={handlePowerLeave}
+                    >
                         Power
+                        {showPower && (
+                            <div className="border-2 border-gray-500 mt-4">
+                            </div>
+                        )}
                     </div>
-                    <div className={` ml-5 mr-5 transition-colors ${isScrolled || isHovered ? 'text-black' : 'text-white'}`}>
+                    <div 
+                        className={` ml-5 mr-5 transition-colors ${isScrolled || isHovered ? 'text-black' : 'text-white'}`}
+                        onMouseEnter={handleSpecializedEnter}
+                        onMouseLeave={handleSpecializedLeave}
+                    >
                         Specialized
+                        {showSpecialized && (
+                            <div className="border-2 border-gray-500 mt-4">
+                            </div>
+                        )}
                     </div>
-                    <div className={` ml-5 mr-5 transition-colors ${isScrolled || isHovered ? 'text-black' : 'text-white'}`}>
+                    <div 
+                        className={` ml-5 mr-5 transition-colors ${isScrolled || isHovered ? 'text-black' : 'text-white'}`}
+                        onMouseEnter={handleExploreEnter}
+                        onMouseLeave={handleExploreLeave}
+                    >
                         Explore 
+                        {showExplore && (
+                            <div className="border-2 border-gray-500 mt-4">
+                            </div>
+                        )}
                     </div>
                     <div className={` ml-5 mr-5 transition-colors ${isScrolled || isHovered ? 'text-black' : 'text-white'}`}>
                         Support
@@ -200,8 +265,9 @@ export default function SwiperCard (){
                 {showCameraDroneMenu && (
                     <div 
                         className="bg-white w-full h-[240px] gird grid-cols-6"
-                        onMouseEnter={()=> setShowCameraDroneMenu(true)}
-                        onMouseLeave={()=> setShowCameraDroneMenu(false)}
+                        ref={cameraDroneMenuRef}
+                        onMouseEnter={handleCameraDropDownEnter}
+                        onMouseLeave={handleCameraDropDownLeave}
                     >
                         <div className="ml-10">
                             <button className="text-gray-400 text-[25px] hover:bg-gray-200">
@@ -220,8 +286,48 @@ export default function SwiperCard (){
                 {showHandHeld && (
                     <div 
                         className="bg-white w-full h-[240px] gird grid-cols-6"
-                        onMouseEnter={()=> setShowHandHeld(true)}
-                        onMouseLeave={()=> setShowHandHeld(false)}
+                        ref={handHeldRef}
+                        onMouseEnter={handleHandHeldEnter}
+                        onMouseLeave={handleHandHeldLeave}
+                    >
+                        <div className="ml-10">
+
+                        </div>
+                    </div>
+                )}
+                {/*Power*/}
+                {showPower && (
+                    <div 
+                        className="bg-white w-full h-[240px] gird grid-cols-6"
+                        ref={powerRef}
+                        onMouseEnter={handlePowerEnter}
+                        onMouseLeave={handlePowerLeave}
+                    >
+                        <div className="ml-10">
+
+                        </div>
+                    </div>
+                )}
+                {/*Specialized*/}
+                {showSpecialized && (
+                    <div 
+                        className="bg-white w-full h-[240px] gird grid-cols-6"
+                        ref={specializedRef}
+                        onMouseEnter={handleSpecializedEnter}
+                        onMouseLeave={handleSpecializedLeave}
+                    >
+                        <div className="ml-10">
+
+                        </div>
+                    </div>
+                )}
+                {/*Explore*/}
+                {showExplore && (
+                    <div 
+                        className="bg-white w-full h-[240px] gird grid-cols-6"
+                        ref={exploreRef}
+                        onMouseEnter={handleExploreEnter}
+                        onMouseLeave={handleExploreLeave}
                     >
                         <div className="ml-10">
 
