@@ -9,7 +9,7 @@ import { newArrivals } from "./swiper";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 export default function SwiperCard (){
-
+    const [activeCategory, setActiveCategory] = useState('public-safety');
     // Camera Drone Menu 
     const [showCameraDroneMenu, setShowCameraDroneMenu] = useState(false);
     const cameraDroneMenuRef = useRef(null);
@@ -23,6 +23,7 @@ export default function SwiperCard (){
     const handleCameraDropDownLeave = () =>{
         cameraDroneTimeout.current = setTimeout(() => {
             setShowCameraDroneMenu(false);
+            setActiveCategory('public-safety');
         }, 50);
     };
     
@@ -87,6 +88,38 @@ export default function SwiperCard (){
     const handleExploreLeave = () =>{
         exploreTimeout.current = setTimeout(() => {
             setShowExplore(false);
+        }, 50);
+    };
+
+    //Support 
+    const [showSupport, setShowSupport] = useState(false);
+    const supportRef = useRef(null);
+    const supportTimeout = useRef<NodeJS.Timeout | null>(null);
+    const handleSupportEnter = () =>{
+        if(supportTimeout.current){
+            clearTimeout(supportTimeout.current);
+        }
+        setShowSupport(true);
+    }
+    const handleSupportLeave = () =>{
+        supportTimeout.current = setTimeout(() => {
+            setShowSupport(false);
+        }, 50);
+    };
+    
+    //Where to buy 
+    const [showWhereToBuy, setShowWhereToBuy] = useState(false);
+    const whereToBuyRef = useRef(null);
+    const whereToBuyTimeout = useRef<NodeJS.Timeout | null>(null);
+    const handleShowWhereToBuyEnter = () =>{
+        if(whereToBuyTimeout.current){
+            clearTimeout(whereToBuyTimeout.current);
+        }
+        setShowWhereToBuy(true);
+    }
+    const handleShowWhereToBuyLeave = () =>{
+        whereToBuyTimeout.current = setTimeout(() => {
+            setShowWhereToBuy(false);
         }, 50);
     };
 
@@ -175,11 +208,27 @@ export default function SwiperCard (){
                             </div>
                         )}
                     </div>
-                    <div className={` ml-5 mr-5 transition-colors ${isScrolled || isHovered ? 'text-black' : 'text-white'}`}>
+                    <div 
+                        className={` ml-5 mr-5 transition-colors ${isScrolled || isHovered ? 'text-black' : 'text-white'}`}
+                        onMouseEnter={handleSupportEnter}
+                        onMouseLeave={handleSupportLeave}
+                    >
                         Support
+                        {showSupport && (
+                            <div className="border-2 border-gray-500 mt-4">
+                            </div>
+                        )}
                     </div>
-                    <div className={` ml-5 mr-5 transition-colors ${isScrolled || isHovered ? 'text-black' : 'text-white'}`}>
+                    <div 
+                        className={` ml-5 mr-5 transition-colors ${isScrolled || isHovered ? 'text-black' : 'text-white'}`}
+                        onMouseEnter={handleShowWhereToBuyEnter}
+                        onMouseLeave={handleShowWhereToBuyLeave}                        
+                    >
                         Where to buy
+                        {showWhereToBuy && (
+                            <div className="border-2 border-gray-500 mt-4">
+                            </div>
+                        )}
                     </div>
                     <div className={`ml-50 px-4 py-2`}>
                         <svg
@@ -264,20 +313,121 @@ export default function SwiperCard (){
                 {/*Camera Drones*/}
                 {showCameraDroneMenu && (
                     <div 
-                        className="bg-white w-full h-[240px] gird grid-cols-6"
+                        className="absolute top-full bg-white w-full shadow-lg"
                         ref={cameraDroneMenuRef}
                         onMouseEnter={handleCameraDropDownEnter}
                         onMouseLeave={handleCameraDropDownLeave}
                     >
-                        <div className="ml-10">
-                            <button className="text-gray-400 text-[25px] hover:bg-gray-200">
-                                Public Safety
-                            </button>
-                            <div className="text-gray-400 text-[25px] hover:bg-gray-200">
-                                Geospatial
-                            </div>
-                            <div className="text-gray-400 text-[25px] hover:bg-gray-200">
-                                Public Safety
+                        <div className="max-w-7xl mx-auto flex relative">
+                            <div className="w-64 py-8">
+                                <div
+                                    className={`w-full text-left px-8 py-3 text-lg text-black bg-white hover:bg-gray-100
+                                    ${activeCategory === 'public-safety'}`}
+                                    onMouseEnter={()=> setActiveCategory('public-safety')}
+                                >
+                                    Public Safety
+                                </div>
+                                <div 
+                                    className={`w-full text-left px-8 py-3 text-lg text-black bg-white hover:bg-gray-100
+                                    ${activeCategory === 'geospatial'}`}
+                                    onMouseEnter={()=> setActiveCategory('geospatial')}
+                                >
+                                    Geospatial
+                                </div>
+                                <div 
+                                    className={`w-full text-left px-8 py-3 text-lg text-black bg-white hover:bg-gray-100
+                                    ${activeCategory === 'inspection'}`}
+                                    onMouseEnter={()=> setActiveCategory('inspection')}
+                                >
+                                Inspection
+                                </div>
+                                <div className="absolute left-80 top-5 w-[1000px] h-auto">
+                                    {activeCategory==='public-safety'&&(
+                                        <div className="grid grid-cols-4 gap-5">
+                                            <div className="flex flex-col text-left space-y-3">
+                                                <h3 className="text-black font-bold" >Law Enforcement</h3>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Situational Awareness</Link>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >First Response</Link>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Collision Reconstruction</Link>
+                                            </div>
+                                            <div className="flex flex-col text-left space-y-3">
+                                                <h3 className="text-black font-bold mb-3" >Firefighting</h3>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Urban Fires</Link>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Wildfires</Link>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Additional Response</Link>
+                                            </div>
+                                            <div className="flex flex-col text-left space-y-3" >
+                                                <h3 className="text-black font-bold" >Emergency Response</h3>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Disaster Response</Link>
+                                            </div>
+                                            <div className="flex flex-col text-left space-y-3" >
+                                                <h3 className="block text-black font-bold" >Search and Rescue</h3>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Search and Rescue</Link>
+                                            </div>
+                                            <div className="w-full mb-100">
+                                                <Link href={"#"} className="text-black font-light hover:underline text-[12px]" >Learn more about Public Safety solutions {">"}</Link>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {activeCategory==='geospatial'&&(
+                                        <div className="grid grid-cols-4 gap-5">
+                                            <div className="flex flex-col text-left space-y-3" >
+                                                <h3 className="text-black font-bold" >Surveying And Mapping</h3>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Land Survey</Link>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Cadastral Survey</Link>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Urban Planning</Link>
+                                            </div>
+                                            <div className="flex flex-col text-left space-y-3" >
+                                                <h3 className="text-black font-bold mb-3" >Construction</h3>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Progress Management</Link>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Earthwork</Link>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >BIM</Link>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Heritage Preservation</Link>
+                                            </div>
+                                            <div className="flex flex-col text-left space-y-3" >
+                                                <h3 className="text-black font-bold" >Mining</h3>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Mining Survey</Link>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Facade High Wall</Link>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Asset Inspection</Link>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Site Safety</Link>
+                                            </div>
+                                            <div className="flex flex-col text-left space-y-3" >
+                                                <h3 className="text-black font-bold" >Search and Rescue</h3>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Search and Rescue</Link>
+                                            </div>
+                                            <div className="w-full mb-140">
+                                                <Link href={"#"} className="text-black font-light hover:underline text-[12px]" >Learn more about Public Safety solutions {">"}</Link>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {activeCategory==='inspection'&&(
+                                        <div className="grid grid-cols-4 gap-5">
+                                            <div className="flex flex-col text-left space-y-3" >
+                                                <h3 className="text-black font-bold" >Electricity</h3>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Powerline Inspection</Link>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Substation Inspection</Link>
+                                            </div>
+                                            <div className="flex flex-col text-left space-y-3" >
+                                                <h3 className="text-black font-bold mb-3" >Oil and Gas</h3>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Facility Inspection</Link>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Pipeline Inspection</Link>
+                                            </div>
+                                            <div className="flex flex-col text-left space-y-3" >
+                                                <h3 className="text-black font-bold" >Renewables</h3>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Photovoltaic Power Plant</Link>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Inspection of Wind Turbines</Link>
+                                            </div>
+                                            <div className="flex flex-col text-left space-y-3" >
+                                                <h3 className="text-black font-bold" >Infrastructure</h3>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Bridge Inspection</Link>
+                                                <Link href={"#"} className="block text-black font-light hover:underline text-[12px]" >Roof Inspection</Link>
+                                            </div>
+                                            <div className="w-full mb-40">
+                                                <Link href={"#"} className="text-black font-light hover:underline text-[12px]" >Learn more about Public Safety solutions {">"}</Link>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -285,52 +435,210 @@ export default function SwiperCard (){
                 {/*Handheld*/}
                 {showHandHeld && (
                     <div 
-                        className="bg-white w-full h-[240px] gird grid-cols-6"
+                        className="bg-white w-full h-full"
                         ref={handHeldRef}
                         onMouseEnter={handleHandHeldEnter}
                         onMouseLeave={handleHandHeldLeave}
                     >
-                        <div className="ml-10">
-
+                        <div className="ml-40 grid grid-cols-8 mr-40 mt-5 mb-5 border-b border-gray-300">
+                            <div>
+                                <img
+                                    src={"https://www-cdn.djiits.com/cms/uploads/f23c00b928367ef9c322a62f6016e8c7.png"}
+                                    className="w-[160px] h-[160px]"
+                                />
+                            </div>
+                            <div>
+                                <Link href={"#"} className="block text-black font-bold hover:underline text-[15px]" >Drones</Link>
+                                <p className="text-gray-400 text-[12px] font-light">Aerial tools for your daily tasks</p>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >DJI Matrice 400</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >Matrice 350 RTK</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >DJI Matrice 4 Series</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >DJI Matrice 4D Series</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >DJI Mavic 3 Enterprise Series</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >Matrice 30 Series</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >DJI Flycart 30</Link>
+                            </div>
+                            <div className="border-l border-gray-300 h-55 ml-20"></div>
+                            <div>
+                                <img
+                                    src={"https://www-cdn.djiits.com/cms/uploads/1785fed645924fa26052e6b48adb8d09.png"}
+                                    className="w-[160px] h-[160px]"
+                                />
+                            </div>
+                            <div>
+                                <Link href={"#"} className="block text-black font-bold hover:underline text-[15px]" >Payloads</Link>
+                                <p className="text-gray-400 text-[12px] font-light">Gather data from multiple angles</p>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >Zenmuse S1</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >Zenmuse V1</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >Zenmuse H30 Series</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >Zenmuse L2</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >Zenmuse H20N</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >Zenmuse P1</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >Zenmuse H20 Series</Link>
+                            </div>
+                            <div className="border-l border-gray-300 h-55 ml-20"></div>
+                            <div>
+                                <img
+                                    src={"https://www-cdn.djiits.com/cms/uploads/67c6cbeb4670781bf2126136232c091f.png"}
+                                    className="w-[160px] h-[160px]"
+                                />
+                            </div>
+                            <div>
+                                <Link href={"#"} className="block text-black font-bold hover:underline text-[15px]" >Remote Drone Operation Solutions</Link>
+                                <p className="text-gray-400 text-[12px] font-light">For Roads Less Traveled</p>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >DJI Dock 3</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >DJI Dock 2</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >DJI Dock</Link>
+                            </div>
+                        </div>
+                        <div className="ml-40 grid grid-cols-8 mr-40 mt-5 mb-5 ">
+                            <div>
+                                <img
+                                    src={"https://www-cdn.djiits.com/cms/uploads/6014568d113d6b783b8b5de662df3c86.png"}
+                                    className="w-[160px] h-[160px]"
+                                />
+                            </div>
+                            <div>
+                                <Link href={"#"} className="block text-black font-bold hover:underline text-[15px]" >Software</Link>
+                                <p className="text-gray-400 text-[12px] font-light">Create digital transformation</p>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >DJI FlightHub 2</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >DJI FlightHub 2 On-Premises</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >DJI Terra</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >DJI Modify</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >DJI DeliveryHub</Link>
+                            </div>
+                            <div className="border-l border-gray-300 h-55 ml-20"></div>
+                            <div>
+                                <img
+                                    src={"https://www-cdn.djiits.com/cms/uploads/fad6fcb334102606758c50c19fb59e2f.png"}
+                                    className="w-[160px] h-[160px]"
+                                />
+                            </div>
+                            <div>
+                                <Link href={"#"} className="block text-black font-bold hover:underline text-[15px]" >Developer Technologies</Link>
+                                <p className="text-gray-400 text-[12px] font-light">Unleash enterprise potential</p>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >Cloud API</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >Mobile SDK</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >Payload SDK</Link>
+                            </div>
+                            <div className="border-l border-gray-300 h-55 ml-20"></div>
+                            <div>
+                                <img
+                                    src={"https://www-cdn.djiits.com/cms/uploads/da080c3600581491e8b883bf4b3ab4a0.png"}
+                                    className="w-[160px] h-[160px]"
+                                />
+                            </div>
+                            <div>
+                                <Link href={"#"} className="block text-black font-bold hover:underline text-[15px]" >Accessories</Link>
+                                <p className="text-gray-400 text-[12px] font-light">Expand your capabilities</p>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >DJI FlightHub 2 AIO</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >Manifold 3</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >D-RTK 3 Multifunctional Station</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >D-RTK 2 Mobile Station</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >DJI SkyPort V2</Link>
+                                <Link href={"#"} className="block text-black font-extralight hover:underline text-[14px]" >DJI X-Port</Link>
+                            </div>
                         </div>
                     </div>
                 )}
                 {/*Power*/}
                 {showPower && (
                     <div 
-                        className="bg-white w-full h-[240px] gird grid-cols-6"
+                        className="bg-white w-full h-full"
                         ref={powerRef}
                         onMouseEnter={handlePowerEnter}
                         onMouseLeave={handlePowerLeave}
                     >
-                        <div className="ml-10">
-
-                        </div>
-                    </div>
-                )}
-                {/*Specialized*/}
-                {showSpecialized && (
-                    <div 
-                        className="bg-white w-full h-[240px] gird grid-cols-6"
-                        ref={specializedRef}
-                        onMouseEnter={handleSpecializedEnter}
-                        onMouseLeave={handleSpecializedLeave}
-                    >
-                        <div className="ml-10">
-
+                        <div className="ml-110 grid grid-cols-3 mr-110 mt-5 mb-5">
+                            <div>
+                                <Link href={"#"} className="block text-black font-bold hover:underline text-[15px]" >Ecosystem Solution Catalogue</Link>
+                                <p className="text-gray-400 text-[12px] font-light">Learn DJI Ecosystem Solution to Expand Drone Application</p>     
+                            </div>
+                            <div className="border-l border-gray-300 h-25 ml-20"></div>
+                            <div>
+                                <Link href={"#"} className="block text-black font-bold hover:underline text-[15px]" >DJI Developer</Link>
+                                <p className="text-gray-400 text-[12px] font-light">Automate DJI Drones with Powerful Customization Tools</p> 
+                            </div>
                         </div>
                     </div>
                 )}
                 {/*Explore*/}
                 {showExplore && (
                     <div 
-                        className="bg-white w-full h-[240px] gird grid-cols-6"
+                        className="bg-white w-full h-full"
                         ref={exploreRef}
                         onMouseEnter={handleExploreEnter}
                         onMouseLeave={handleExploreLeave}
                     >
-                        <div className="ml-10">
+                        <div className="ml-50 grid grid-cols-7 mr-50 mt-5 mb-5">
+                            <div>
+                                <Link href={"#"} className="block text-black font-bold hover:underline text-[15px]" >Blogs</Link>
+                                <p className="text-gray-400 text-[12px] font-light">The latest on enterprise drones</p>    
+                            </div>
+                            <div className="border-l border-gray-300 h-25 ml-20"></div>
+                            <div>
+                                <Link href={"#"} className="block text-black font-bold hover:underline text-[15px]" >Users Stories</Link>
+                                <p className="text-gray-400 text-[12px] font-light">How industry leaders are putting drones to work</p> 
+                            </div>
+                            <div className="border-l border-gray-300 h-25 ml-20"></div>
+                            <div>
+                                <Link href={"#"} className="block text-black font-bold hover:underline text-[15px]" >News</Link>
+                                <p className="text-gray-400 text-[12px] font-light">Stay informed with the latest Enterprise drone trends</p> 
+                            </div>
+                            <div className="border-l border-gray-300 h-25 ml-20"></div>
+                            <div>
+                                <Link href={"#"} className="block text-black font-bold hover:underline text-[15px]" >Rescue Map</Link>
+                                <p className="text-gray-400 text-[12px] font-light">Drone have helped rescue people around the world, see where</p> 
+                            </div>
+                        </div>
+                    </div>
+                )}
 
+                {showWhereToBuy && (
+                    <div 
+                        className="bg-white w-full h-full"
+                        ref={exploreRef}
+                        onMouseEnter={handleShowWhereToBuyEnter}
+                        onMouseLeave={handleShowWhereToBuyLeave}
+                    >
+                        <div className="ml-50 grid grid-cols-7 mr-50 mt-5 mb-5 border-b border-gray-300">
+                            <div>
+                                <Link href={"#"} className="block text-black font-bold hover:underline text-[15px]" >Data Security</Link>
+                                <p className="text-gray-400 text-[12px] font-light">Put Your Data First</p>    
+                            </div>
+                            <div className="border-l border-gray-300 h-25 ml-20 mb-5"></div>
+                            <div>
+                                <Link href={"#"} className="block text-black font-bold hover:underline text-[15px]" >Service Request and Inquiry</Link>
+                                <p className="text-gray-400 text-[12px] font-light">Start your service journey</p> 
+                            </div>
+                            <div className="border-l border-gray-300 h-25 ml-20 mb-5"></div>
+                            <div>
+                                <Link href={"#"} className="block text-black font-bold hover:underline text-[15px]" >DJI Care Enterprise</Link>
+                                <p className="text-gray-400 text-[12px] font-light">Comprehensive Fleet Protection</p> 
+                            </div>
+                            <div className="border-l border-gray-300 h-25 ml-20 mb-5"></div>
+                            <div>
+                                <Link href={"#"} className="block text-black font-bold hover:underline text-[15px]" >UTC Training</Link>
+                                <p className="text-gray-400 text-[12px] font-light">UAS Training Center</p> 
+                            </div>
+                        </div>
+                        <div className="ml-50 grid grid-cols-7 mr-50 mt-5 mb-5 border-b border-gray-300">
+                            <div>
+                                <Link href={"#"} className="block text-black font-bold hover:underline text-[15px]" >Fly Safe</Link>
+                                <p className="text-gray-400 text-[12px] font-light">Tips, Regulations, and Geo Unlocking</p>    
+                            </div>
+                            <div className="border-l border-gray-300 h-25 ml-20 mb-5"></div>
+                            <div>
+                                <Link href={"#"} className="block text-black font-bold hover:underline text-[15px]" >DJI Maintenance Program</Link>
+                                <p className="text-gray-400 text-[12px] font-light">Keep Your Fleet Online</p> 
+                            </div>
+                            <div></div>
+                            <div>
+                            </div>
+                            <div></div>
+                            <div>
+
+                            </div>
                         </div>
                     </div>
                 )}
