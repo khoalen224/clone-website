@@ -1,55 +1,44 @@
 'use client'; 
 import { Apple, Chrome, Facebook } from "lucide-react";
-import Link from "next/link";
+import { useState } from "react";
 import api from '../config/axios';
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-export default function handleLogin() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+export default function handleSignUp() {
+    const [formData, setFormData] =useState({
+        name:'',
+        email:'',
+        password:'',
+    });
     const [errorMessage, setErrorMessage] = useState('');
     const[isLoading, setIsLoading] =useState(false);
     const router = useRouter();
-    const loginhandle = async (e: React.FormEvent) =>{
+    const handleRegister = async (e: React.FormEvent) =>{
         e.preventDefault();
         setIsLoading(true);
         setErrorMessage('');
 
-        if (!email || !password) {
-            setErrorMessage('Vui lòng nhập đầy đủ thông tin');
+        if(!formData.email || !formData.name){
+            setErrorMessage('Please inform your email or name');
             setIsLoading(false);
             return;
         }
         try{
-            const payload = {
-                email: email.trim(),
-                password: password
+            const payload ={
+                name: formData.name,
+                email: formData.email,
+                password: formData.password,
             };
-            const res = await api.post(
-                '/api/login',
-                null,
-                {
-                    params: {
-                        email: email.trim(),
-                        password
-                    },
-                    headers: {
-                        'Accept': 'application/json',
-                        'ngrok-skip-browser-warning': 'true'
-                    }
-                }
-            );
-            console.log("Login successful");
-
+            const res = await api.post('/api/register', payload);
             if (res.data.token) {
                 localStorage.setItem('authToken', res.data.token);
             }
-            router.push('/homepage');
+            router.push('/login');
         } catch{
-            setErrorMessage('Login failed. Please try again.');
+            setErrorMessage('Registration failed. Please try again.');
             setIsLoading(false);
         }
     }
+
     return(
         <div 
             className="min-h-screen bg-cover bg-fixed bg-center bg-no-repeat overflow-auto"
@@ -64,40 +53,30 @@ export default function handleLogin() {
                         className="h-6 mt-10 ml-4" 
                     />
                     <div className="m-2 font-semibold text-2xl">
-                        Log in to DJI
+                        Create Your DJI Account
                     </div>
-                    <form onSubmit={loginhandle}> 
+                    <form onSubmit={handleRegister}> 
+                    <div className="m-2 font-semibold text-[15px]">
+                        Name
+                    </div>
                     <div className="m-3">
-                        <button className="border-1 w-full rounded-[5px] h-14 hover:bg-gray-200">
-                            <div className="h-5 font-medium flex justify-center">
-                                <Apple size={20} className='mr-4'/>
-                                Continue with Apple
-                            </div>
-                        </button>
-                        <button className="border-1 w-full rounded-[5px] h-14 mt-2 hover:bg-gray-200">
-                            <div className="h-5 font-medium flex justify-center">
-                                <Chrome size={20} className='mr-4'/>
-                                Continue with Google
-                            </div>
-                        </button>
-                        <button className="border-1 w-full rounded-[5px] h-14 mt-2 hover:bg-gray-200">
-                            <div className="h-5 font-medium flex justify-center">
-                                <Facebook size={20} className='mr-4'/>
-                                Continue with Facebook
-                            </div>
-                        </button>
-                    </div>
-                    <div className="mb-[8px] border-y border-gray-200 mr-2 ml-2">
+                        <input 
+                            type="name" 
+                            name="name"
+                            value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            className="border-1 w-full rounded-[5px] h-14 hover:bg-gray-200"
+                        /> 
                     </div>
                     <div className="m-2 font-semibold text-[15px]">
                         email address
                     </div>
                     <div className="m-3">
                         <input 
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            disabled={isLoading}
+                            type="email" 
+                            name="email"
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             className="border-1 w-full rounded-[5px] h-14 hover:bg-gray-200"
                         /> 
                     </div>
@@ -107,40 +86,45 @@ export default function handleLogin() {
                     <div className="m-3">
                         <input 
                             type="password" 
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            disabled={isLoading}
+                            name="password"
+                            value={formData.password}
+                             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                             className="border-1 w-full rounded-[5px] h-14 hover:bg-gray-200"
                         /> 
                     </div>
-                    <a href="/forgotpassword" className="m-2 font-semibold text-[15px] text-blue-500 hover:underline">
-                        Forgot password? Want to reset?
-                    </a>
+                    <div className="m-3">
+                        <p className=" ml-1 text-[12px] font-light" >By creating account, you confirm that you agree to DJI Privacy Policy and  Terms of Use </p>
+                    </div>
                     <div className=" flex m-3">
                         <input type="checkbox"/>
-                        <p className=" ml-1 text-[12px] font-sans" >Click to get exclusive DJI benefits, latest offers, and updates.</p>
+                        <p className=" ml-1 text-[15px] font-sans" >Get announcements, recommendations and updates about DJI products, services, software updates and more.</p>
                    </div>
                    <div className="m-3">
-                        <button
+                        <button 
                             type="submit"
-                            disabled={isLoading}              
                             className="border-1 w-full rounded-[5px] h-14 hover:bg-gray-200"
                         >
                             <div className="h-5 font-medium flex justify-center">
-                                Log in
+                                Sign up
                             </div>
                         </button>
                    </div>
                    <div className="flex m-3 items-center">
-                        <p className="ml-22 text-[15px] font-semibold" >New user?</p>
-                        <Link href="/signup" className="ml-2 font-semibold text-[15px] text-blue-500 hover:underline">
-                            Create account
-                        </Link>
+                        <p className="ml-22 text-[15px] font-semibold" >Already had an account?</p>
+                        <a href="/login" className="ml-2 font-semibold text-[15px] text-blue-500 hover:underline">
+                            Log in
+                        </a>
                    </div>
                    <div className="flex m-3 items-center">
-                        <p className="m-1 text-[12px] font-semibold text-gray-400" >By continuing, you hereby agree to Privacy policy and Terms of Use</p>
+                        <p className="m-1 text-[13px] font-semibold text-gray-400" >By continuing, you hereby agree to Privacy policy and Terms of Use</p>
                    </div>
-                   </form>
+                    <div className="mb-[8px] border-y border-gray-200 mr-2 ml-2">
+                    </div>
+                    <div className="flex m-3 items-center">
+                       <p className="m-1 text-[12px] font-bold" > Need help with registration? </p>
+                       <a href ={"#"} className="m-1 text-[12px] font-light text-blue-500 hover:underline">DJI Support</a>
+                    </div>
+                    </form>
                 </div>
             </div>
 
