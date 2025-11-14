@@ -3,7 +3,7 @@ import Footer from "./component/footer";
 import GrayFooter from "./component/grayFooter";
 import SwiperCard from "./component/swiperCard";
 import SwiperVideoCard from "./component/swiperVidCard";
-
+import api from "../config/axios";
 export default function HomePage() {
     return (
         <div className="flex flex-col" >

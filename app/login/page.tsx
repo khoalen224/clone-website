@@ -4,12 +4,14 @@ import Link from "next/link";
 import api from '../config/axios';
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useAuth } from "../homepage/auth/authContext";
 export default function handleLogin() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const[isLoading, setIsLoading] =useState(false);
     const router = useRouter();
+    const {login} = useAuth();
     const loginhandle = async (e: React.FormEvent) =>{
         e.preventDefault();
         setIsLoading(true);
@@ -21,10 +23,6 @@ export default function handleLogin() {
             return;
         }
         try{
-            const payload = {
-                email: email.trim(),
-                password: password
-            };
             const res = await api.post(
                 '/api/login',
                 null,
@@ -44,6 +42,14 @@ export default function handleLogin() {
             if (res.data.token) {
                 localStorage.setItem('authToken', res.data.token);
             }
+
+            const userData ={
+                id: res.data.id || res.data.userId || email,
+                name: res.data.name || res.data.fullName || email.split('@')[0],
+                email: email.trim()
+            };
+
+            login(userData);
             router.push('/homepage');
         } catch{
             setErrorMessage('Login failed. Please try again.');
