@@ -22,18 +22,6 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${authToken}`;
     }
 
-    // Special logging for video call APIs
-    if (config.url?.includes('video-calls')) {
-      console.log('🎥 Video Call API Request:', {
-        method: config.method?.toUpperCase(),
-        url: config.url,
-        fullURL: `${config.baseURL}${config.url}`,
-        headers: config.headers,
-        data: config.data,
-        params: config.params
-      });
-    }
-
     console.log('🚀 API Request:', {
       method: config.method?.toUpperCase(),
       url: config.url,

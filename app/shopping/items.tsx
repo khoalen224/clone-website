@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 interface ProductCardProps {
     image: string;
     title: string;
@@ -24,9 +26,11 @@ export default function ProductCard({image, title, description, price}: ProductC
                 <span className="text-2xl font-bold text-blue-600">
                     USD ${price.toLocaleString()}
                 </span>
+                <Link href ="/fetchjson">
                 <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
                     BUY NOW
                 </button>
+                </Link>
             </div>
         </div>
     )
