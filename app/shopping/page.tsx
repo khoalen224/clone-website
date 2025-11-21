@@ -2,9 +2,44 @@
 import HeaderExport from "../homepage/component/header";
 import { useEffect, useRef, useState } from "react";
 import ProductCard from "./items";
-import { products } from "./itemsData";
+import api from "../config/axios";
+interface Product {
+    id: number;
+    image: string;
+    title: string;
+    description: string;
+    price: number;
+    stockQuantity: number;
+    isActive: boolean;
+    createdAt: string;
+    updatedAt: string;
+}
 export default function ShoppingPage(){
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError]= useState<string | null>(null);
+    const fetchProduct = async () =>{
+        try{
+            const response = await api.get('/api/products');
+            setProducts(response.data);
+            setLoading(false);
+        } catch(err: any){
+            setError(err.message || "Something's wrong");
+            setLoading(false);
+        }
+    }
 
+    useEffect(()=>{
+        fetchProduct();
+    });
+
+    if(loading){
+        <div>Loading</div>;
+    }
+    
+    if(error){
+        <div>Error: {error}</div>
+    }
     return(
         <div
             className="min-w-[480px] min-h-screen"
@@ -18,6 +53,7 @@ export default function ShoppingPage(){
                     {products.map((product)=>(
                         <ProductCard
                             key={product.id}
+                            productId={product.id}
                             image={product.image}
                             title={product.title}
                             description={product.description}
