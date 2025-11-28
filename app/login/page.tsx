@@ -12,6 +12,7 @@ export default function handleLogin() {
     const[isLoading, setIsLoading] =useState(false);
     const router = useRouter();
     const {login} = useAuth();
+    
     const loginhandle = async (e: React.FormEvent) =>{
         e.preventDefault();
         setIsLoading(true);
@@ -38,7 +39,6 @@ export default function handleLogin() {
                 }
             );
             console.log("Login successful");
-
             if (res.data.token) {
                 localStorage.setItem('authToken', res.data.token);
             }
@@ -46,15 +46,40 @@ export default function handleLogin() {
             const userData ={
                 id: res.data.id || res.data.userId || email,
                 name: res.data.name || res.data.fullName || email.split('@')[0],
-                email: email.trim()
+                email: email.trim(),
+                role: res.data.role?.id
             };
 
             login(userData);
-            router.push('/homepage');
-        } catch{
-            setErrorMessage('Login failed. Please try again.');
+
+            if(userData.role === 1){
+                router.push('/adminpage');
+            } else if(userData.role === 2){
+                router.push('/homepage');
+            } else{
+                router.push('/homepage')
+            }
+        } catch(error :any){
+            console.error("Login error: ", error);
+
+            if(error.response){
+                switch(error.response.status){
+                    case 401:
+                        setErrorMessage("Invalid email or password");
+                        break;
+                    case 404:
+                        setErrorMessage("Not found");
+                        break;
+                    default: 
+                        setErrorMessage("Login failed");
+                }
+            } else{
+                setErrorMessage("Can not connect");
+            }
+        } finally{
             setIsLoading(false);
         }
+
     }
     return(
         <div 

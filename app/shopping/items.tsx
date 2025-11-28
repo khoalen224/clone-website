@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useState } from "react";
 import { useAuth } from "../homepage/auth/authContext";
 import api from "../config/axios";
